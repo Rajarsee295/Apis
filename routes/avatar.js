@@ -9,6 +9,7 @@ const User = require('../models/User');
 //gets all the middlewares
 const auth = require('../middleware/auth_middleware');
 const rate_limiter = require('../middleware/rate_lmiter_avatar')
+const imageModeration = require('../middleware/imageModeration')
 
 //setups the route 
 const router = express.Router();
@@ -35,6 +36,7 @@ router.post('/upload', auth, rate_limiter, upload.single('avatar'), async (req, 
         if (!req.file) return res.status(400).json({ msg: 'No file provided' });
 
         //resizing the image if its not a gif
+        let buffer;
         const mimetype = req.file.mimetype
         if (mimetype !== 'image/gif') {
             buffer = await sharp(req.file.buffer)
@@ -45,6 +47,14 @@ router.post('/upload', auth, rate_limiter, upload.single('avatar'), async (req, 
         } else {
             buffer = req.file.buffer;
             uploadMimeType = 'image/gif';
+        }
+
+        //checking if the image is safe or not
+        if (mimetype !== 'image/gif') {
+            const moderation = await moderateImage(buffer);
+            if (!moderation.allowed) {
+                return res.status(400).json({ error: moderation.reason });
+            }
         }
 
 
