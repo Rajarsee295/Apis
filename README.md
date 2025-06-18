@@ -14,6 +14,7 @@ A RESTful API built with **Node.js**, **Express**, **MongoDB**, and **AWS S3** t
 - Multer for file uploads
 - Sharp for image processing
 - Rate limiting for security
+-  **Sightengine API** for image moderation
 
 ---
 
@@ -35,12 +36,19 @@ npm install
 Create a .env file in the root directory 
 ```bash
 PORT=5000
+
 MONGO_URI=your_mongodb_uri
+
 JWT_SECRET=your_jwt_secret
+
 AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
 AWS_REGION=your_s3_region
 AWS_BUCKET_NAME=your_bucket_name
+
+SIGHTENGINE_USER=your_sightengine_user
+SIGHTENGINE_SECRET=your_sightengine_secret
+
 ```
 
 ### ▶️ Run the Server
