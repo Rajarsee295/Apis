@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title:  API
+  description: API for user registration, login, and avatar management
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RegisterInput:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterInput'
+      responses:
+        201:
+          description: User created
+        400:
+          description: Validation error
+
+  /auth/login:
+    post:
+      summary: Login and get JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+      responses:
+        200:
+          description: Successful login
+        401:
+          description: Invalid credentials
+
+  /upload:
+    post:
+      summary: Upload an avatar image
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: Image uploaded successfully
+        400:
+          description: Image failed moderation or validation
+        429:
+          description: Rate limit exceeded
+
+  /avatar/{userId}:
+    get:
+      summary: Get user's avatar URL
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns avatar URL
+
+  /avatar:
+    delete:
+      summary: Delete current user's avatar
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Avatar deleted
+
+  /admin/avatars:
+    get:
+      summary: Admin - list all avatars
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of avatars
+
+  /admin/avatars/{userId}:
+    delete:
+      summary: Admin - delete specific avatar
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Avatar deleted

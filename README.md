@@ -6,16 +6,16 @@ A RESTful API built with **Node.js**, **Express**, **MongoDB**, and **AWS S3** t
 
 ## 🛠️ Tech Stack
 
-- Node.js + Express.js
-- MongoDB 
-- AWS S3 for image storage
-- Bcrypt for password hashing 
-- JWT for authentication
-- Multer for file uploads
-- Sharp for image processing
+- **Node.js** + **Express.js**
+- **MongoDB** 
+- **AWS S3** for image storage
+- **Bcrypt** for password hashing 
+- **JWT** for authentication
+- **Multer** for file uploads
+- **Sharp** for image processing
 - Rate limiting for security
 -  **Sightengine API** for image moderation
-
+-  **Swagger** (Interactive API docs)
 ---
 
 ## 🚀 Getting Started
@@ -60,3 +60,10 @@ npm start
 The API will be running at http://localhost:5000.
 
 ---
+
+### 📘 API Documentation
+
+#### 🌐 Swagger (Interactive)
+
+Visit after starting the server:
+http://localhost:5000/api-docs
